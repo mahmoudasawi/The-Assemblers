@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="main-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #222222;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .logo img {
+            height: 60px;
+            margin-left: 10px;  
+        }
+
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #222222;
+            transition: 0.4s;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .btn {
+            background-color: #FEBC11;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .assembler-card .assembler-row {
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+        }
+        .assembler-card .assembler-row .name,
+        .assembler-card .assembler-row .service,
+        .assembler-card .assembler-row .rating {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            padding: 0 10px;
+        }
+        .assembler-card .assembler-row:last-child {
+            border-bottom: none;
+        }
+        .assembler-card .assembler-row .name::before,
+        .assembler-card .assembler-row .service::before,
+        .assembler-card .assembler-row .rating::before {
+            font-weight: bold;
+        }
+        .assembler-card .assembler-row .service {
+            text-align: center;
+        }
+        .assembler-card .assembler-row .rating {
+            text-align: right;
+        }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 16px 24px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            color: #222222;
+            transition: 0.3s;
+        }
+
+        .sidebar a span {
+            color: #FEBC11;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sidebar.open {
+            width: 250px;
+        }
+
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-container {
+            position: relative;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 200px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .profile-menu.show {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .menu-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .profile-modal.active {
+            display: flex;
+        }
+
+        .profile-modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .profile-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .save-profile-btn {
+            background-color: var(--primary-color);
+            color: black;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--button-radius);
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .save-profile-btn:hover {
+            background-color: #e5a600;
+        }
+
+        /* Adjust navbar to account for menu icon */
+        .navbar {
+            padding-left: 70px;
+        }
+
+        /* Help Popup Styles */
+        .help-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .help-popup-content {
+            background-color: #f6f4e7;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .help-popup-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .contact-actions {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .contact-actions button {
+            background-color: #FEBC11;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .email-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #222;
+        }
+
+        .popup-button {
+            background-color: #FEBC11;
+            color: #222;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 999px;
+            margin: 10px 0;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: background-color 0.3s ease;
+        }
+
+        .popup-button:hover {
+            background-color: #e6aa00;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-icon" onclick="toggleSidebar()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="Application.html">Become an <span>Assembler</span></a>
+        <a href="service.html">Services</a>
+        <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+        <a href="#">Help center</a>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="THEASSEMBLERS.png" alt="The Assemblers Logo">
+        </div>
+        <div class="nav-right">
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart</span>
+            </div>
+            <div class="profile-icon" id="profileIcon">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-modal-content">
+            <button class="profile-modal-close" id="closeProfileModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2>Profile</h2>
+            <form class="profile-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <button type="submit" class="save-profile-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="helpPopup" class="help-popup">
+        <div class="help-popup-content">
+            <h2 class="help-popup-title">Help Center</h2>
+            <div class="contact-option" onclick="toggleContactActions(this)">
+                <i class="fas fa-phone"></i>
+                <span>07XXXXXXXXX</span>
+                <div class="contact-actions">
+                    <button onclick="window.location.href='tel:07XXXXXXXXX'">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                    <button onclick="window.location.href='sms:07XXXXXXXXX'">
+                        <i class="fas fa-comment"></i> Text
+                    </button>
+                </div>
+            </div>
+            <a href="mailto:theassemblers@gmail.com" class="email-option">
+                <i class="fas fa-envelope"></i>
+                <span>theassemblers@gmail.com</span>
+            </a>
+            <button class="popup-button" onclick="closeHelpPopup()">Close</button>
+        </div>
+    </div>
+
+    <main class="dashboard">
+        <div class="checkout-container">
+            <div class="checkout-grid">
+               
+                <div class="summary-card">
+                    <h2>Service Summary</h2>
+                   
+
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <img src="17.png" alt="Repair Service">
+                        </div>
+                        <div class="service-details">
+                            <div class="detail-row">
+                                <span class="label">Service:</span>
+                                <span class="value">Painting Services</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Location:</span>
+                                <span class="value">Yajouz St., Amman, Jordan</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Date & Time:</span>
+                                <span class="value">29/6/2025, 10:00 AM</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Assembler:Ahmad AlSaqa</span>
+                                <span class="value"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Notes:</span>
+                                <span class="value">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <img src="18.png" alt="Maintenance Service">
+                        </div>
+                        <div class="service-details">
+                            <div class="detail-row">
+                                <span class="label">Service:</span>
+                                <span class="value">Home Deep Cleaning and Maid Services</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Location:</span>
+                                <span class="value">Yajouz St., Amman, Jordan</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Date & Time:</span>
+                                <span class="value">02/7/2025, 9:00 AM</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Assembler:</span>
+                                <span class="value">Malika Alshaar</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Notes:</span>
+                                <span class="value">Bring cleaning supplies</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <img src="14.png" alt="Assembler Service">
+                        </div>
+                        <div class="service-details">
+                            <div class="detail-row">
+                                <span class="label">Service:</span>
+                                <span class="value">HVAC System Maintenance & Repair</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Location:</span>
+                                <span class="value">Yajouz St., Amman, Jordan</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Date & Time:</span>
+                                <span class="value">10/7/2025, 1:00 PM</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Assembler:</span>
+                                <span class="value">Ahmad Madahleh</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Notes:</span>
+                                <span class="value">Call when you arrive</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="edit-details-btn">Edit Details</button>
+                </div>
+
+                
+                <div class="checkout-details">
+                    
+                    <div class="assembler-card">
+                        <div class="card-header">
+                            <h2>Assembler Information</h2>
+                            <button class="change-assembler-btn">Change Assembler</button>
+                        </div>
+                        <div class="assembler-list">
+                            <div class="assembler-row">
+                                <span class="name"><strong>Name:</strong> Ahmad AlSaqa</span>
+                                <span class="service"><strong>Service:</strong> Painting</span>
+                                <span class="rating"><strong>Rating:</strong> 5⭐</span>
+                            </div>
+                            <div class="assembler-row">
+                                <span class="name"><strong>Name:</strong> Malika Alshaar</span>
+                                <span class="service"><strong>Service:</strong> Cleaning</span>
+                                <span class="rating"><strong>Rating:</strong> 5⭐</span>
+                            </div>
+                            <div class="assembler-row">
+                                <span class="name"><strong>Name:</strong> Ahmad Madahleh</span>
+                                <span class="service"><strong>Service:</strong> HVAC</span>
+                                <span class="rating"><strong>Rating:</strong> 5⭐</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="price-card">
+                        <h2>Price Breakdown</h2>
+                        <div class="price-list">
+                            <div class="price-row">
+                                <span><strong>Service:</strong> HVAC</span>
+                                <span class="amount">70 JOD</span>
+                            </div>
+                            <div class="price-row">
+                                <span><strong>Service:</strong> Painting</span>
+                                <span class="amount">40 JOD</span>
+                            </div>
+                            <div class="price-row">
+                                <span><strong>Service:</strong> Cleaning</span>
+                                <span class="amount">75 JOD</span>
+                            </div>
+                            <div class="price-row additional">
+                                <span><strong>Additional Charges:</strong></span>
+                                <span class="amount">23.5 JOD</span>
+                            </div>
+                            <div class="price-row total">
+                                <span><strong>Total</strong></span>
+                                <span class="amount"><strong>208.5 JOD</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="payment-selection-card">
+                        <h2>Payment Method</h2>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="cash">
+                                <span>Cash</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="card">
+                                <span>Online Payment (Card)</span>
+                            </label>
+                        </div>
+                        <div class="terms-section">
+                            <label class="terms-checkbox">
+                                <input type="checkbox" name="privacy">
+                                <span>I read and agree to privacy policy</span>
+                            </label>
+                            <label class="terms-checkbox">
+                                <input type="checkbox" name="terms">
+                                <span>I read and agree to terms and conditions</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="confirm-booking-btn">Confirm Booking!</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <div>Contact us: 07XXXXXXXX</div>
+            <div>Email: theassemblers@gmail.com</div>
+        </div>
+        <div class="copyright">©all copyrights goes to</div>
+    </footer>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mySidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('mySidebar');
+            const menuIcon = document.querySelector('.menu-icon');
+            if (!sidebar.contains(e.target) && !menuIcon.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Profile modal functionality
+        const profileIcon = document.getElementById('profileIcon');
+        const profileModal = document.getElementById('profileModal');
+        const closeProfileModal = document.getElementById('closeProfileModal');
+
+        profileIcon.addEventListener('click', () => {
+            profileModal.classList.add('active');
+        });
+
+        closeProfileModal.addEventListener('click', () => {
+            profileModal.classList.remove('active');
+        });
+
+        // Close profile modal when clicking outside
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                profileModal.classList.remove('active');
+            }
+        });
+
+        // Handle profile form submission
+        const profileForm = document.querySelector('.profile-form');
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add your profile update logic here
+            profileModal.classList.remove('active');
+        });
+
+        
+        const confirmBookingBtn = document.querySelector('.confirm-booking-btn');
+        const privacyCheckbox = document.querySelector('input[name="privacy"]');
+        const termsCheckbox = document.querySelector('input[name="terms"]');
+        const cardPayment = document.querySelector('input[value="card"]');
+        const cashPayment = document.querySelector('input[value="cash"]');
+
+        confirmBookingBtn.addEventListener('click', () => {
+            if (cardPayment.checked) {
+                if (privacyCheckbox.checked && termsCheckbox.checked) {
+                    window.location.href = 'payment.html';
+                } else {
+                    alert('Please agree to both privacy policy and terms & conditions');
+                }
+            } else if (cashPayment.checked) {
+                if (privacyCheckbox.checked && termsCheckbox.checked) {
+                    alert('Booking confirmed! You will pay in cash when the service is completed.');
+                } else {
+                    alert('Please agree to both privacy policy and terms & conditions');
+                }
+            }
+        });
+
+        // Help Center functionality
+        function openHelpPopup() {
+            const helpPopup = document.getElementById('helpPopup');
+            helpPopup.style.display = 'flex';
+        }
+
+        function closeHelpPopup() {
+            const helpPopup = document.getElementById('helpPopup');
+            helpPopup.style.display = 'none';
+        }
+
+        function toggleContactActions(element) {
+            const actions = element.querySelector('.contact-actions');
+            actions.style.display = actions.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Update the help center link in the sidebar
+        document.querySelector('.sidebar a[href="#"]').onclick = function(e) {
+            e.preventDefault();
+            openHelpPopup();
+        };
+
+        // Close help popup when clicking outside
+        document.getElementById('helpPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeHelpPopup();
+            }
+        });
+    </script>
+</body>
+</html> 

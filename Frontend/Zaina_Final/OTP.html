@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OTP Verification</title>
+  <style>
+    :root {
+      --prime-yellow: #ffc107;
+      --beige: #f5f5dc;
+      --light-blue: #27a8cf;
+      --dark-text: #000;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .otp-container {
+      background-color: var(--light-blue);
+      padding: 60px 40px;
+      border-radius: 15px;
+      text-align: center;
+      width: 300px;
+    }
+
+    .otp-container h2 {
+      color: var(--dark-text);
+      margin-bottom: 40px;
+    }
+
+    .otp-inputs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .otp-inputs input {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      text-align: center;
+      border-radius: 10px;
+      border: none;
+      background-color: #f1f1f1;
+    }
+
+    .verify-btn {
+      width: 100%;
+      padding: 15px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+      background-color: var(--beige);
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 30px;
+    }
+
+    .otp-inputs:focus-within ~ .verify-btn {
+      background-color: var(--prime-yellow);
+    }
+
+    .resend-section {
+      margin-top: 30px;
+    }
+
+    .resend-btn {
+      background-color: transparent;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 5px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .resend-btn:hover {
+      background-color: var(--prime-yellow);
+    }
+
+    footer {
+      background-color: var(--light-blue);
+      color: white;
+      text-align: center;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 4rem;
+      margin-top: auto;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+    
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+    
+    .sidebar.open {
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo">
+      </a>
+    </div>
+  </header>
+
+ 
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <main>
+    <div class="otp-container">
+      <h2>OTP Code Verification</h2>
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+      </div>
+      <button class="verify-btn" onclick="window.location.href='login2.html'">Verify</button>
+      <div class="resend-section">
+        <span>Didn't receive code?</span>
+        <button class="resend-btn">Resend Code</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div>Contact us: 07XXXXXXXXX<br> ©all copyrights goes to </div>
+    <div>Email: <a href="mailto:theassemblers@gmail.com">theassemblers@gmail.com</a></div>
+  </footer>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+  
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (sidebar.classList.contains('open') && 
+          !sidebar.contains(event.target) && 
+          !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

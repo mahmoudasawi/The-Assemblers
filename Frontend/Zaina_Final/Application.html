@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Become an Assembler</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ccc;
+      background: white;
+    }
+
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+    .logo {
+      margin-left: 10px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      height: 60px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .btn {
+      background-color: gold;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .section-header {
+      text-align: left;
+      margin: 2rem 4rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-header h1 {
+      font-size: 2rem;
+      color: #007BFF;
+    }
+
+    .section-header p {
+      margin-top: 1rem;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    .section-header span.orange {
+      color: orange;
+    }
+
+    .form-section {
+      display: flex;
+      justify-content: center;
+      padding: 2rem 4rem;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    form {
+      display: flex;
+      gap: 4rem;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .form-left, .form-right {
+      flex: 1 1 400px;
+      text-align: left;
+    }
+
+    .form-left h2 {
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      background-color: #edeadd;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .checkbox-group {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-weight: normal;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      margin-top: 3px;
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      background-color: white;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-group input[type="checkbox"]:checked {
+      background-color: gold;
+      border-color: gold;
+    }
+
+    .checkbox-group input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-size: 14px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .submit-section {
+      width: 100%;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .submit-section button {
+      background-color: #dcd9c7;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-section button:hover {
+      background-color: gold;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    .back-link a {
+      background-color: gold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      color: black;
+      display: inline-block;
+    }
+
+    .back-link a:hover {
+      background-color: #dcd9c7;
+    }
+
+    .footer {
+      background-color: #009FDB;
+      color: white;
+      text-align: center;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 4rem;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      form {
+        flex-direction: column;
+      }
+
+      .form-left, .form-right {
+        width: 100%;
+      }
+    }
+
+    
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+    
+    .sidebar.open {
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="The Assemblers Logo">
+    </a>
+    <div class="nav-buttons">
+      <button class="btn">🛒 Cart</button>
+      <a href="login2.html"><button class="btn">🔒 Log In</button></a>
+    </div>
+  </header>
+
+ 
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <section class="section-header">
+    <h1><span class="blue">Your Efforts.</span> <span class="orange">Our Appreciation!</span></h1>
+    <p>
+      <em>Are you a skilled professional in home repair or maintenance seeking a dynamic platform to expand your reach and simplify your work life? The Assemblers invites you to become a valued member of our growing family of trusted service providers. We offer an intuitive platform to effortlessly manage your appointments, accept new task requests, and flexibly adjust your availability. Join The Assemblers family today and connect with more homeowners, streamline your operations, and thrive in a supportive community dedicated to excellence in home maintenance.</em>
+    </p>
+  </section>
+
+  <section class="form-section">
+    <form>
+      <div class="form-left">
+        <h2><span style="color: #007BFF;">Become an</span> <span style="color: orange;">Assembler!</span></h2>
+        <label>Full Name</label>
+        <input type="text" required />
+
+        <label>Email</label>
+        <input type="email" required />
+
+        <label>Phone number</label>
+        <input type="tel" required />
+
+        <label>Age</label>
+        <input type="number" required />
+
+        <label>Upload Resume</label>
+        <input type="file" required />
+
+        <label>Skills/Services</label>
+        <input type="text" required />
+
+        <label>Years of experience</label>
+        <input type="number" required />
+      </div>
+
+      <div class="form-right">
+        <h2 style="visibility: hidden;">Spacer</h2>
+        <label>Why should we hire you?</label>
+        <textarea required></textarea>
+
+        <label>Availability</label>
+        <textarea required></textarea>
+
+        <div class="checkbox-group">
+          <label><input type="checkbox" required /> I read and agree to privacy policy</label>
+          <label><input type="checkbox" required /> I read and agree to terms and conditions</label>
+        </div>
+      </div>
+
+      <div class="submit-section">
+        <button type="submit">Apply now!</button>
+        <div class="back-link">
+          <a href="main.html">back to home page</a>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <div>Contact us: 07XXXXXXXXX<br> ©all copyrights goes to </div>
+    <div>Email: <a href="mailto:theassemblers@gmail.com">theassemblers@gmail.com</a></div>
+  </footer>
+
+
+
+<div id="successPopup" class="popup-overlay">
+  <div class="popup-box">
+    <p><strong>Your application has been<br>submitted successfully!</strong></p>
+    <a href="main.html" class="home-button">Back to Home page</a>
+  </div>
+</div>
+
+<style>
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup-box {
+    background-color: #faf7e6;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    font-size: 1.2rem;
+  }
+
+  .popup-box p {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .home-button {
+    display: inline-block;
+    background-color: #fdbf00;
+    color: #000;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+
+  .home-button:hover {
+    background-color: #e0a800;
+  }
+</style>
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+  }
+
+ 
+  document.addEventListener('click', function(event) {
+    const sidebar = document.getElementById("sidebar");
+    const menuIcon = document.querySelector('.menu-icon');
+    
+    if (sidebar.classList.contains('open') && 
+        !sidebar.contains(event.target) && 
+        !menuIcon.contains(event.target)) {
+      sidebar.classList.remove('open');
+    }
+  });
+
+ 
+  document.querySelector('form').addEventListener('submit', function (e) {
+    e.preventDefault(); 
+    document.getElementById('successPopup').style.display = 'flex';
+  });
+</script>
+
+</body>
+</html>

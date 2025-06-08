@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="main-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="THEASSEMBLERS.png" alt="The Assemblers Logo">
+        </div>
+        <div class="nav-right">
+            <div class="profile-icon" id="profileIcon">
+                <i class="fas fa-user"></i>
+                <div class="profile-dropdown">
+                    <a href="#" class="dropdown-item" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard">
+        <div class="welcome-section">
+            <h1></h1>
+        </div>
+
+        <div class="payment-container">
+            <div class="payment-card">
+                <h2>Select Payment Method</h2>
+                <div class="payment-methods">
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="visa">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa">
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="mastercard">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard">
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="paypal">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="PayPal">
+                    </label>
+                </div>
+
+                
+                <div class="virtual-card" id="virtualCard">
+                    <div class="card-chip"></div>
+                    <div class="card-logo"></div>
+                    <div class="card-number">•••• •••• •••• ••••</div>
+                    <div class="card-details">
+                        <div class="card-holder">
+                            <span class="label">Card Holder</span>
+                            <span class="value">JOHN DOE</span>
+                        </div>
+                        <div class="card-expires">
+                            <span class="label">Expires</span>
+                            <span class="value">MM/YY</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="payment-form">
+                    <div class="form-group">
+                        <label for="card-number">Card Number</label>
+                        <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiry">Expiration Date</label>
+                            <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Cardholder Name</label>
+                        <input type="text" id="name" placeholder="John Doe">
+                    </div>
+
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-item">
+                            <span>Service Total</span>
+                            <span>$99.99</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Tax</span>
+                            <span>$10.00</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>$109.99</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="pay-button">
+                        Pay Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    
+    <div class="confirmation-popup" id="confirmationPopup" style="display: none;">
+        <div class="popup">
+            <h2>Your booking has been<br>successfully confirmed!</h2>
+            <button class="button" onclick="window.location.href='index.html'">Back to Home page</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="contact-info">
+            <div>Contact us: 07XXXXXXXX</div>
+            <div>Email: theassemblers@gmail.com</div>
+        </div>
+        <div class="copyright">©all copyrights goes to</div>
+    </footer>
+
+    <style>
+        .confirmation-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            display: none;
+        }
+
+        .popup {
+            background-color: #f9f6ed;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 507px;
+            height: 270px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup h2 {
+            color: #1a1a1a;
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            background-color: #ffc800;
+            color: #000;
+            font-weight: bold;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #e6b800;
+        }
+    </style>
+
+    <script>
+        
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            if (value.length > 0) {
+                value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+            }
+            e.target.value = value;
+        });
+
+       
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace('/', '');
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2);
+            }
+            e.target.value = value;
+        });
+
+        
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^\d]/g, '');
+        });
+
+        
+        const paymentMethods = document.querySelectorAll('input[name="payment"]');
+        const virtualCard = document.getElementById('virtualCard');
+        const cardNumber = document.getElementById('card-number');
+        const cardHolder = document.getElementById('name');
+        const cardExpiry = document.getElementById('expiry');
+
+        
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', (e) => {
+                const cardType = e.target.value;
+                virtualCard.className = 'virtual-card ' + cardType;
+                if (cardType === 'paypal') {
+                    virtualCard.style.display = 'none';
+                } else {
+                    virtualCard.style.display = 'block';
+                }
+            });
+        });
+
+       
+        cardNumber.addEventListener('input', (e) => {
+            const number = e.target.value || '•••• •••• •••• ••••';
+            document.querySelector('.card-number').textContent = number;
+        });
+
+        
+        cardHolder.addEventListener('input', (e) => {
+            const name = e.target.value.toUpperCase() || 'JOHN DOE';
+            document.querySelector('.card-holder .value').textContent = name;
+        });
+
+        
+        cardExpiry.addEventListener('input', (e) => {
+            const expiry = e.target.value || 'MM/YY';
+            document.querySelector('.card-expires .value').textContent = expiry;
+        });
+
+        
+        const paymentForm = document.querySelector('.payment-form');
+        const confirmationPopup = document.getElementById('confirmationPopup');
+
+        paymentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            
+            const cardNumber = document.getElementById('card-number').value;
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            const name = document.getElementById('name').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+
+            // Check if all fields are filled
+            if (cardNumber && expiry && cvv && name && paymentMethod) {
+                confirmationPopup.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 

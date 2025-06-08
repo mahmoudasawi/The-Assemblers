@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="auth-styles.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  >
+  <style>
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .btn {
+      background-color: gold;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+    
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo">
+      </a>
+    </div>
+    <div class="header-buttons">
+      <button class="btn">🛒 Cart</button>
+      <a href="login2.html"><button class="btn">🔒 Log In</button></a>
+    </div>
+  </header>
+
+
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <main class="main">
+    <div class="signup-container">
+      <h2>Sign Up</h2>
+      <form action="index2.html" method="get">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required
+        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+        title="Must be ≥8 chars, include upper & lower case, a number & a special character."
+        >
+
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+        <label for="age">Age</label>
+        <input type="number" min="18" max="100" id="age" placeholder="Enter your age" required>
+
+        <button type="submit" class="btn">
+          <i class="fas fa-sign-in-alt"></i> Log in
+        </button>
+      </form>
+      <div class="back">
+        <a href="main.html">back to home page</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="left">
+      Contact us: 07XXXXXXXXX<br>
+      © all copyrights goes to
+    </div>
+    <div class="right">
+      Email: theassemblers@gmail.com
+    </div>
+  </footer>
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      var password = document.getElementById('password').value;
+      var confirm = document.getElementById('confirm-password').value;
+      if (password !== confirm) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+        document.getElementById('confirm-password').focus();
+      }
+    });
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+    
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (sidebar.classList.contains('open') && 
+          !sidebar.contains(event.target) && 
+          !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+    </script>
+</body>
+</html>

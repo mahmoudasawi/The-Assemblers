@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="auth-styles.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  >
+  <style>
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+   
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+    
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo">
+      </a>
+    </div>
+  </header>
+
+ 
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <main class="main">
+    <div class="signup-container">
+      <h2>Reset Password</h2>
+      <p class="subtitle">Send Verification Code via:</p>
+
+      
+      <div class="method-select">
+        <button type="button" class="method-btn active" data-method="email">
+          Email
+        </button>
+        <button type="button" class="method-btn" data-method="phone">
+          Phone Number
+        </button>
+      </div>
+
+      <form id="reset-form">
+        <div id="email-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            title="Please enter a valid email address (e.g. user@example.com)"
+          >
+        </div>
+
+        <div id="phone-group" style="display:none;">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter your phone number"
+            required
+            pattern="07[0-9]{8}"
+            title="Please enter a 10-digit Jordanian phone number starting with 07"
+          >
+        </div>
+
+        <button type="submit" class="btn" onclick="window.location.href='OTP.html'">
+          Send Code
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="left">
+      Contact us: 07XXXXXXXXX<br>
+      © all copyrights goes to
+    </div>
+    <div class="right">
+      Email: theassemblers@gmail.com
+    </div>
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.method-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        
+        const method = btn.dataset.method;
+        document.getElementById('email-group').style.display = method === 'email' ? 'block' : 'none';
+        document.getElementById('phone-group').style.display = method === 'phone' ? 'block' : 'none';
+      });
+    });
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+    
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (sidebar.classList.contains('open') && 
+          !sidebar.contains(event.target) && 
+          !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

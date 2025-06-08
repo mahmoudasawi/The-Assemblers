@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="login-styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <header class="header">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo">
+      </a>
+    </div>
+  </header>
+
+ 
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <main class="container">
+    <div class="login-card">
+      <h2>Log In</h2>
+
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+      <label for="username">User Name</label>
+      <input type="text" id="username" placeholder=""/>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder=""/>
+
+      <div class="forgot">
+        <a href="forgot2.html">Forgot password?</a>
+      </div>
+
+        <button type="submit" class="login-btn">
+        <i class="fas fa-sign-in-alt"></i> Log in
+      </button>
+      </form>
+
+      <div class="signup-prompt">
+        <span>Don't have an account?</span>
+        <button class="signup-btn" onclick="window.location.href='signup2.html'">Sign up!</button>
+      </div>
+    </div>
+    <div class="back-link">
+      <a href="main.html">back to home page</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-left">
+      <p>Contact us: 07XXXXXXXXX</p>
+      <p>© all copyrights goes to</p>
+    </div>
+    <div class="footer-right">
+      <p>Email: theassemblers@gmail.com</p>
+    </div>
+  </footer>
+
+  <script src="login.js"></script>
+
+  <style>
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+   
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+    
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;
+    }
+  </style>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Assemblers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #222222;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;  
+    }
+
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: #222222;
+      transition: 0.4s;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .btn {
+      background-color: #FEBC11;  /* Updated from gold */
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #0099cc;
+      margin: 1rem 0 2rem 0;
+      font-size: 3.2rem;
+      letter-spacing: 1.5px;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .about {
+      display: flex;
+      flex-direction: column;
+      margin: 1rem 0 4rem 0;
+    }
+
+    .about-content {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      margin-top: 1.5rem;
+    }
+
+    .about img {
+      height: 120px;
+      flex-shrink: 0;
+    }
+
+    .about p {
+      margin: 0;
+      font-size: 1.4rem;
+      line-height: 1.6;
+    }
+
+    .keyword-blue {
+      color: #0099cc;
+      font-weight: bold;
+    }
+
+    .keyword-yellow {
+      color: #FEBC11;  /* Updated yellow color */
+      font-weight: bold;
+    }
+
+    .testimonials {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 20px 0;
+      scrollbar-width: thin;
+      scrollbar-color: #0099cc #f2f2f2;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .testimonials::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .testimonials::-webkit-scrollbar-track {
+      background: #f2f2f2;
+      border-radius: 4px;
+    }
+
+    .testimonials::-webkit-scrollbar-thumb {
+      background-color: #0099cc;
+      border-radius: 4px;
+    }
+
+    .testimonial-card {
+      background-color: #f2f2f2;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 3px 3px 0 #444;
+      min-width: 250px;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .testimonial-card img {
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    .testimonial-card .stars {
+      color: #FEBC11;  /* Updated from gold */
+    }
+
+    .why-us {
+      margin: 5rem 0;
+    }
+
+    .why-us h2 {
+      letter-spacing: 1.5px;
+    }
+
+    .primary-yellow {
+      color: #FEBC11;  /* Updated yellow color */
+    }
+
+    .services {
+      margin: 5rem 0;
+    }
+
+    .services h2 {
+      letter-spacing: 1.5px;
+    }
+
+    .button-container {
+      background-color: #1a1a1a;
+      padding: 20px;
+      display: inline-block;
+    }
+
+    .learn-more {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #FEBC11; 
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 9999px;
+      padding: 12px 24px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+    }
+
+    .learn-more .arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      position: relative;
+      font-size: 1.2em;
+    }
+
+    .learn-more:hover .arrow {
+      transform: translateX(12px);
+    }
+
+    .learn-more::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #000;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .learn-more:hover::after {
+      width: calc(100% - 48px); /*Padding */
+    }
+
+    footer {
+      background-color: #0099cc;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .testimonials {
+        flex-direction: column;
+      }
+    }
+
+    /*sidebar*/
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 1.4rem;
+      color: #222222;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #FEBC11;  
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+    /*sidebar*/
+    .sidebar.open {
+      width: 250px;
+    }
+
+    /*helpcenter*/
+    .help-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .help-popup-content {
+      background-color: #f6f4e7;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .help-popup-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #222222;
+      margin-bottom: 20px;
+    }
+
+    .contact-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #FEBC11;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-option:hover {
+      background-color: #E8E6D8;
+    }
+
+    .contact-option i {
+      font-size: 1.2rem;
+      color: #222222;
+    }
+
+    .contact-option span {
+      font-size: 1.1rem;
+      color: #222222;
+    }
+
+    .contact-actions {
+      display: none;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    .contact-actions button {
+      background-color: #FEBC11;
+      color: #222222;
+      font-weight: 600;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-actions button:hover {
+      background-color: #E8E6D8;
+    }
+
+    .email-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #FEBC11;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .email-option:hover {
+      background-color: #E8E6D8;
+    }
+
+    .email-option i {
+      font-size: 1.2rem;
+      color: #222222;
+    }
+
+    .email-option span {
+      font-size: 1.1rem;
+      color: #222222;
+    }
+
+    .popup-button {
+      background-color: #FEBC11;
+      color: #222222;
+      font-weight: 600;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .popup-button:hover {
+      background-color: #E8E6D8;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="menu-icon" onclick="toggleSidebar()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+  <div class="logo">
+    <img src="logo.png" alt="The Assemblers Logo">
+  </div>
+  <div class="header-buttons">
+    <button class="btn">🛒 Cart</button>
+    <a href="login2.html"><button class="btn">🔒 Log In</button></a>
+  </div>
+</header>
+
+<!--idebar-->
+<div id="sidebar" class="sidebar">
+  <a href="Application.html">Become an <span>Assembler</span></a>
+  <a href="service.html">Services</a>
+  <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+  <a href="#">Help center</a>
+</div>
+
+<div class="container">
+  <section class="about">
+    <h2><span class="primary-yellow"></span>About Us<span class="primary-yellow"></span></h2>
+    <div class="about-content">
+      <img src="Alogo.png" alt="The Assemblers Logo">
+      <p><span class="primary-yellow" style="font-weight: bold">The Assemblers</span>: Where <span class="keyword-blue">Skills</span> Meet <span class="keyword-yellow">Simplicity</span>.<br>
+        We're redefining how people get things done. <span class="primary-yellow" style="font-weight: bold">The Assemblers</span> is a <span class="keyword-yellow">smart platform</span> that connects clients with <span class="keyword-blue">verified professionals</span> for fast, high-quality assembly and setup services. Whether you're furnishing a home, installing equipment, or tackling a custom project, we make the process smooth, from booking to completion. For assemblers, it's a gateway to <span class="keyword-yellow">real work</span>, <span class="keyword-blue">flexible opportunities</span>, and <span class="keyword-yellow">professional growth</span>. For clients, it's <span class="keyword-blue">peace of mind</span>, delivered on time.</p>
+    </div>
+  </section>
+
+  <section class="why-us">
+    <h2>Why <span class="primary-yellow">Us</span></h2>
+    <div class="testimonials">
+      <div class="testimonial-card">
+        <p>👩‍🦰 ★★★★★</p>
+        <p class="stars">"Amazing work!"</p>
+        <p>Reliable solution! Easy to find plumber,track arrival,pay securely. <br>Highly recommend!</p>
+      </div>
+      <div class="testimonial-card">
+        <p>🧑🏽‍🦱 ★★★★★</p>
+        <p class="stars">"Very professional!"</p>
+        <p>Used twice for AC/electrical work. Professional, on time, excellent service.<br> Trusted platform.</p>
+      </div>
+      <div class="testimonial-card">
+        <p>👩🏽 ★★★★☆</p>
+        <p class="stars">"Great service!"</p>
+        <p>Lifesaver reminders! User reviews helped me choose the perfect provider.<br> Very happy.</p>
+      </div>
+      <div class="testimonial-card">
+        <p>🧕 ★★★★☆</p>
+        <p class="stars">"Will hire again!"</p>
+        <p>Exceeded expectations! Seamless, stress-free, knowledgeable technician, quick fix. <br>Will use again!</p>
+      </div>
+      <div class="testimonial-card">
+        <p>👨‍💼 ★★★★★</p>
+        <p class="stars">"Outstanding service!"</p>
+        <p>Quick response time, professional team, and excellent work quality. <br>Definitely my go-to service!</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <h2>Services</h2>
+    <a href="service.html">
+      <button class="learn-more">Learn More <span class="arrow">⟶</span></button>
+    </a>
+  </section>
+</div>
+
+<footer>
+  <div>Contact us: 07XXXXXXXXX<br>©all copyrights goes to </be></div>
+  <div>Email: <a href="mailto:theassemblers@gmail.com" style="color: white;">theassemblers@gmail.com</a></div>
+</footer>
+
+<!--helpcenter-->
+<div id="helpPopup" class="help-popup">
+  <div class="help-popup-content">
+    <h2 class="help-popup-title">Help Center</h2>
+    <div class="contact-option" onclick="toggleContactActions(this)">
+      <i class="fas fa-phone"></i>
+      <span>07XXXXXXXXX</span>
+      <div class="contact-actions">
+        <button onclick="window.location.href='tel:07XXXXXXXXX'">
+          <i class="fas fa-phone"></i> Call
+        </button>
+        <button onclick="window.location.href='sms:07XXXXXXXXX'">
+          <i class="fas fa-comment"></i> Text
+        </button>
+      </div>
+    </div>
+    <a href="mailto:theassemblers@gmail.com" class="email-option">
+      <i class="fas fa-envelope"></i>
+      <span>theassemblers@gmail.com</span>
+    </a>
+    <button class="popup-button" onclick="closeHelpPopup()">Close</button>
+  </div>
+</div>
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+  }
+
+  //close sidebar when click
+  document.addEventListener('click', function(event) {
+    const sidebar = document.getElementById("sidebar");
+    const menuIcon = document.querySelector('.menu-icon');
+    
+    if (sidebar.classList.contains('open') && 
+        !sidebar.contains(event.target) && 
+        !menuIcon.contains(event.target)) {
+      sidebar.classList.remove('open');
+    }
+  });
+
+  function showHelpPopup() {
+    const popup = document.getElementById("helpPopup");
+    popup.style.display = "flex";
+  }
+
+  function closeHelpPopup() {
+    const popup = document.getElementById("helpPopup");
+    popup.style.display = "none";
+  }
+
+  function toggleContactActions(element) {
+    const actions = element.querySelector('.contact-actions');
+    actions.style.display = actions.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  //close help center
+  document.getElementById("helpPopup").addEventListener("click", function(e) {
+    if (e.target === this) {
+      this.style.display = "none";
+    }
+  });
+
+  //side bar help pop up
+  document.querySelector('.sidebar a[href="#"]').onclick = function(e) {
+    e.preventDefault();
+    showHelpPopup();
+  };
+</script>
+
+</body>
+</html>

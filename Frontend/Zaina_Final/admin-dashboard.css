@@ -1,0 +1,214 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: white;
+  color: #222222;
+}
+
+.topbar {
+  background-color: #222222;
+  color: white;
+  padding: 15px 20px;
+  font-size: 16px;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  transition: padding-left 0.3s;
+}
+
+.container.sidebar-open {
+  padding-left: 280px;
+}
+
+.header {
+  background-color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hamburger {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 100px;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bell-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.welcome {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222222;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: #FEBC11;
+}
+
+.sidebar {
+  position: fixed;
+  left: -260px;
+  top: 0;
+  bottom: 0;
+  width: 260px;
+  background-color: #FEBC11;
+  color: white;
+  padding-top: 80px;
+  transition: left 0.3s ease;
+  z-index: 100;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  display: none;
+}
+
+.sidebar-overlay.show {
+  display: block;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sidebar-menu li:hover {
+  background-color: #333;
+}
+
+.sidebar-menu li.active {
+  background-color: #333;
+}
+
+.overview {
+  background-color: #e6e3d8;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.card {
+  background-color: #e6e3d8;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.card strong {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: transparent;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: bold;
+}
+
+.actions button {
+  border: none;
+  border-radius: 15px;
+  padding: 5px 12px;
+  margin: 2px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.view-btn, .ban-btn, .approve-btn, .reject-btn, .drop-btn {
+  background-color: #FEBC11;
+}
+
+.role {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin: 2px;
+  font-size: 12px;
+}
+
+.role.client {
+  color: #00bfff;
+  background-color: #e0e0e0;
+}
+
+.role.assembler {
+  color: #00bfff;
+}
+
+.footer {
+  background-color: #2ca4cd;
+  color: white;
+  padding: 15px 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

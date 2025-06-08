@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Assemblers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ccc;
+      background: white;
+    }
+
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+   
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+   
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .logo {
+      margin-left: 10px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .btn {
+      background-color: gold;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .assemblers-section {
+      text-align: left;
+      padding: 2rem;
+    }
+
+    .assemblers-section h1 {
+      font-size: 2rem;
+      margin-left: 2rem;
+    }
+
+    .assemblers-section .blue {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    .assemblers-section .orange {
+      color: orange;
+      text-decoration: none;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin: 2rem auto;
+      padding: 0 4rem;
+      max-width: 1400px;
+      justify-items: center;
+    }
+
+    .card {
+      background-color: #fff;
+      width: 300px;
+      padding: 1rem;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .worker-name {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .card img {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .worker-role {
+      color: #666;
+      font-size: 0.9rem;
+      margin: 10px 0;
+    }
+
+    .stars {
+      color: gold;
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .footer {
+      background-color: #009FDB;
+      color: white;
+      text-align: center;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 4rem;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    
+    .help-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .help-popup-content {
+      background-color: #f6f4e7;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .help-popup-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #222222;
+      margin-bottom: 20px;
+    }
+
+    .contact-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #FEBC11;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-option:hover {
+      background-color: #E8E6D8;
+    }
+
+    .contact-option i {
+      font-size: 1.2rem;
+      color: #222222;
+    }
+
+    .contact-option span {
+      font-size: 1.1rem;
+      color: #222222;
+    }
+
+    .contact-actions {
+      display: none;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    .contact-actions button {
+      background-color: #FEBC11;
+      color: #222222;
+      font-weight: 600;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-actions button:hover {
+      background-color: #E8E6D8;
+    }
+
+    .email-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #FEBC11;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .email-option:hover {
+      background-color: #E8E6D8;
+    }
+
+    .email-option i {
+      font-size: 1.2rem;
+      color: #222222;
+    }
+
+    .email-option span {
+      font-size: 1.1rem;
+      color: #222222;
+    }
+
+    .popup-button {
+      background-color: #FEBC11;
+      color: #222222;
+      font-weight: 600;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .popup-button:hover {
+      background-color: #E8E6D8;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo">
+      </a>
+    </div>
+    <div class="header-buttons">
+      <button class="btn">🛒 Cart</button>
+      <a href="login2.html"><button class="btn">🔒 Log In</button></a>
+    </div>
+  </header>
+
+  
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <main>
+    <section class="assemblers-section">
+      <h1><span class="blue">Our</span> <span class="orange">Assemblers</span></h1>
+      <div class="card-container">
+        <div class="card">
+          <div class="worker-name">Saeed Samkari</div>
+          <img src="worker 1.png" alt="Worker 1" />
+          <div class="worker-role">Senior Plumber</div>
+          <div class="stars">★★★★★</div>
+          <p>A highly experienced plumber, ready to tackle any water-related issue in your home, from leaks to installations.</p>
+        </div>
+        <div class="card">
+          <div class="worker-name">Sharif Shalabi</div>
+          <img src="electrician.png" alt="Worker 2" />
+          <div class="worker-role">Electrical Expert</div>
+          <div class="stars">★★★★★</div>
+          <p>A skilled professional specializing in all electrical needs, ensuring safe and efficient power for your home.</p>
+        </div>
+        <div class="card">
+          <div class="worker-name">Ahmad Madhaleh</div>
+          <img src="miner 1.png" alt="Worker 3" />
+          <div class="worker-role">HVAC Specialist</div>
+          <div class="stars">★★★★★</div>
+          <p>An expert in heating, ventilation, and air conditioning systems, ensuring your home's climate control is always optimal.</p>
+        </div>
+        
+         <div class="card">
+          <div class="worker-name">Ahmad Helmi</div>
+          <img src="architect.png" alt="Worker 3" />
+          <div class="worker-role">Master Carpenter</div>
+          <div class="stars">★★★★★</div>
+          <p> A craftsman proficient in all aspects of carpentry, capable of repairs, custom builds, and intricate woodworking.</p>
+        </div>
+        <div class="card">
+          <div class="worker-name">Ahmad ALSaqa</div>
+          <img src="wall-painter.png" alt="Worker 3" />
+          <div class="worker-role">Painting Expert</div>
+          <div class="stars">★★★★★</div>
+          <p>A meticulous painter who delivers a flawless finish, transforming your spaces with precision and care.</p>
+        </div>
+        <div class="card">
+          <div class="worker-name">Malika Alshaar</div>
+          <img src="maid.png" alt="Worker 3" />
+          <div class="worker-role">Cleaning Specialist</div>
+          <div class="stars">★★★★★</div>
+          <p>A dedicated professional providing thorough and efficient cleaning services to keep your home sparkling.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Contact us: 07XXXXXXXXX<br> ©all copyrights goes to </div>
+    <div>Email: <a href="mailto:theassemblers@gmail.com">theassemblers@gmail.com</a></div>
+  </footer>
+
+ 
+  <div id="helpPopup" class="help-popup">
+    <div class="help-popup-content">
+      <h2 class="help-popup-title">Help Center</h2>
+      <div class="contact-option" onclick="toggleContactActions(this)">
+        <i class="fas fa-phone"></i>
+        <span>07XXXXXXXXX</span>
+        <div class="contact-actions">
+          <button onclick="window.location.href='tel:07XXXXXXXXX'">
+            <i class="fas fa-phone"></i> Call
+          </button>
+          <button onclick="window.location.href='sms:07XXXXXXXXX'">
+            <i class="fas fa-comment"></i> Text
+          </button>
+        </div>
+      </div>
+      <a href="mailto:theassemblers@gmail.com" class="email-option">
+        <i class="fas fa-envelope"></i>
+        <span>theassemblers@gmail.com</span>
+      </a>
+      <button class="popup-button" onclick="closeHelpPopup()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (sidebar.classList.contains('open') && 
+          !sidebar.contains(event.target) && 
+          !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    function showHelpPopup() {
+      const popup = document.getElementById("helpPopup");
+      popup.style.display = "flex";
+    }
+
+    function closeHelpPopup() {
+      const popup = document.getElementById("helpPopup");
+      popup.style.display = "none";
+    }
+
+    function toggleContactActions(element) {
+      const actions = element.querySelector('.contact-actions');
+      actions.style.display = actions.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    
+    document.getElementById("helpPopup").addEventListener("click", function(e) {
+      if (e.target === this) {
+        this.style.display = "none";
+      }
+    });
+
+    
+    document.querySelector('.sidebar a[href="#"]').onclick = function(e) {
+      e.preventDefault();
+      showHelpPopup();
+    };
+  </script>
+
+</body>
+</html>

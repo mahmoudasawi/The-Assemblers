@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Password</title>
+  <link rel="stylesheet" href="auth-styles.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  >
+  <style>
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      transition: 0.4s;
+    }
+
+    
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #ffb400;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+   
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo">
+      </a>
+    </div>
+  </header>
+
+  
+  <div id="sidebar" class="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+
+  <main class="main">
+    <div class="signup-container">
+      <h2>Create New Password</h2>
+      <p class="subtitle">Enter New Password</p>
+
+      
+
+      <form id="newpass-form">
+        <div id="newpass-group">
+          <label for="new-password">New Password</label>
+          <input
+            type="password"
+            id="new-password"
+            name="new-password"
+            placeholder="New Password"
+            required
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+            title="Must be ≥8 chars, include upper & lower case, a number & a special character."
+          >
+        </div>
+
+        <div id="confirm-group" style="margin-top:20px;">
+          <label for="confirm-password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            placeholder="Confirm Password"
+            required
+          >
+          <p id="match-error" class="error" style="display:none;">
+            ✗ Passwords do not match.
+          </p>
+        </div>
+
+        <button type="submit" class="btn" style="margin-top:30px;">
+          Continue
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="left">
+      Contact us: 07XXXXXXXXX<br>
+      © all copyrights goes to
+    </div>
+    <div class="right">
+      Email: theassemblers@gmail.com
+    </div>
+  </footer>
+
+  <script>
+    const form    = document.getElementById('newpass-form');
+    const pwd     = document.getElementById('new-password');
+    const confirm = document.getElementById('confirm-password');
+    const errMsg  = document.getElementById('match-error');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      
+      if (!pwd.checkValidity()) {
+        pwd.reportValidity();
+        return;
+      }
+      if (!confirm.checkValidity()) {
+        confirm.reportValidity();
+        return;
+      }
+
+      
+      if (pwd.value !== confirm.value) {
+        errMsg.style.display = 'block';
+        return;
+      }
+
+      
+      window.location.href = 'login2.html';
+    });
+
+    
+    confirm.addEventListener('input', () => {
+      errMsg.style.display = 'none';
+    });
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+    
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (sidebar.classList.contains('open') && 
+          !sidebar.contains(event.target) && 
+          !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

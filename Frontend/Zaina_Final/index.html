@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Assemblers</title>
+    <link rel="stylesheet" href="main-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 16px 24px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            color: #222222;
+            transition: 0.3s;
+        }
+
+        .sidebar a span {
+            color: #FEBC11;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: #f1f1f1;
+        }
+
+       
+        .sidebar.open {
+            width: 250px;
+        }
+
+        
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-container {
+            position: relative;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 200px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .profile-menu.show {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .menu-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .profile-modal.active {
+            display: flex;
+        }
+
+        .profile-modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .profile-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .save-profile-btn {
+            background-color: var(--primary-color);
+            color: black;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--button-radius);
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .save-profile-btn:hover {
+            background-color: #e5a600;
+        }
+
+        
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background-color: #f6f4e7;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .popup-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        .popup-button {
+            background-color: #ffbe00;
+            color: #222;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 999px;
+            margin: 10px 0;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: background-color 0.3s ease;
+        }
+
+        .popup-button:hover {
+            background-color: #e6aa00;
+        }
+
+    
+        .help-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .help-popup-content {
+            background-color: #f6f4e7;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .help-popup-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-option:hover {
+            background-color: #ffbe00;
+        }
+
+        .contact-option i {
+            font-size: 1.2rem;
+            color: #222;
+        }
+
+        .contact-option span {
+            font-size: 1.1rem;
+            color: #222;
+        }
+
+        .contact-actions {
+            display: none;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .contact-actions button {
+            background-color: #ffbe00;
+            color: #222;
+            font-weight: 600;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-actions button:hover {
+            background-color: #e6aa00;
+        }
+
+        .email-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .email-option:hover {
+            background-color: #ffbe00;
+        }
+
+        .email-option i {
+            font-size: 1.2rem;
+            color: #222;
+        }
+
+        .email-option span {
+            font-size: 1.1rem;
+            color: #222;
+        }
+
+        .welcome-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .welcome-section h1 {
+            margin: 0;
+        }
+
+        .notification-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        .notification-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .notification-menu.show {
+            display: block;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: #1a73e8;
+            z-index: 1;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .notification-section {
+            margin: 15px;
+            width: calc(100% - 30px);
+            box-sizing: border-box;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+
+        .section-header {
+            padding: 10px 15px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #eee;
+            border-radius: 6px 6px 0 0;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section-content {
+            padding: 10px;
+        }
+
+        .booking-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+
+        .booking-item h4 {
+            margin: 0 0 5px 0;
+            color: #222;
+            font-size: 1em;
+            word-wrap: break-word;
+        }
+
+        .booking-item p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9em;
+            word-wrap: break-word;
+        }
+
+        .annual-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f8f8f8;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            color: #1a73e8;
+            font-weight: 600;
+        }
+
+        .close-notifications {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .close-notifications:hover {
+            color: #e0e0e0;
+        }
+
+        .reminder-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .reminder-item:last-child {
+            border-bottom: none;
+        }
+
+        .reminder-title {
+            color: #1a73e8;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .reminder-details {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .reminder-time {
+            color: #333;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .announcement-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .announcement-item:last-child {
+            border-bottom: none;
+        }
+
+        .announcement-title {
+            color: #e67e22;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .announcement-details {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .offer-highlight {
+            color: #e67e22;
+            font-weight: 600;
+        }
+
+        .booking-frequency {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .frequency-yearly {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .frequency-monthly {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .frequency-weekly {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        
+        .view-details-popup {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .view-details-popup .popup {
+            background-color: #ede9dd;
+            color: #1c1c1c;
+            border-radius: 8px;
+            padding: 16px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .view-details-popup .popup p {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+        }
+
+        .view-details-popup .popup p:last-child {
+            margin-bottom: 0;
+        }
+
+        .view-details-popup .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #1c1c1c;
+            padding: 0;
+            line-height: 1;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-details-popup .close-popup:hover {
+            color: #666;
+        }
+
+        .booking-actions {
+            position: relative;
+            margin-top: 5px;
+        }
+
+        .past-bookings {
+            position: relative;
+        }
+
+        .past-bookings h2 {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            margin-top: -10px;
+        }
+
+        .booking-info {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .booking-info p {
+            margin: 1px 0;
+            line-height: 1.1;
+            padding: 0;
+        }
+
+        .rating-label {
+            margin: 0;
+        }
+
+        .review-section {
+            margin-top: 1px;
+        }
+
+        .review-section p {
+            margin: 1px 0;
+        }
+
+        .review-textarea {
+            width: 100%;
+            min-height: 35px;
+            max-height: 50px;
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+            margin-top: 1px;
+            margin-bottom: 2px;
+        }
+
+        .booking-actions {
+            margin-top: 2px;
+        }
+
+        .profile-info {
+            margin-bottom: 1rem;
+        }
+
+        .profile-info p {
+            margin: 0.5rem 0;
+        }
+
+        .profile-edit-form {
+            display: none;
+            margin-bottom: 1rem;
+        }
+
+        .profile-edit-form.active {
+            display: block;
+        }
+
+        .profile-edit-form input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .profile-edit-form .form-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-edit-form button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-profile-btn {
+            background-color: #ffbe00;
+            color: #222;
+        }
+
+        .cancel-edit-btn {
+            background-color: #f1f1f1;
+            color: #222;
+        }
+
+        .profile-info.hidden {
+            display: none;
+        }
+
+        
+        .star-rating {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .star-rating .stars {
+            color: #ddd;
+            font-size: 1.2em;
+        }
+
+        .star-rating .stars.active {
+            color: #ffd700;
+        }
+
+        .rating-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 100px;
+        }
+
+        .rating-label {
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating-stars {
+            font-size: 16px;
+            color: #ddd;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .rating-stars.active {
+            color: #ffd700;
+        }
+
+        .rating-popup {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .rating-popup .star {
+            display: block;
+            font-size: 16px;
+            color: #ddd;
+            cursor: pointer;
+            padding: 2px 0;
+            text-align: left;
+            line-height: 1;
+        }
+
+        .rating-popup .star:hover,
+        .rating-popup .star.active {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="menu-icon" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="logo">
+            <a href="main.html">
+                <img src="logo.png" alt="The Assemblers Logo">
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="checkout.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart</span>
+            </a>
+            <div class="profile-container">
+                <img src="acc.png" alt="Account" id="profileImage" style="width: 40px; height: 40px; cursor: pointer; border-radius: 50%; object-fit: cover;" onclick="toggleProfileMenu()" />
+                <div class="profile-menu" id="profileMenu">
+                    <div class="menu-item" onclick="document.getElementById('profilePictureInput').click()">
+                        <span>Edit Profile Picture</span>
+                    </div>
+                    <div class="menu-item">
+                        <span>Settings</span>
+                    </div>
+                    <div class="menu-item" style="color: #ff0000;" onclick="window.location.href='main.html'">
+                        <span>Log Out</span>
+                    </div>
+                </div>
+                <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePicture(event)" />
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <a href="Application.html">Become an <span>Assembler</span></a>
+        <a href="service.html">Services</a>
+        <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+        <a href="#">Help center</a>
+    </div>
+
+    <main class="dashboard">
+        <div class="welcome-section">
+            <h1>Welcome back! <span id="clientName">Client's Name -</span></h1>
+            <div class="notification-container">
+                <img src="notif.png" alt="Notifications" class="notification-icon" onclick="toggleNotificationMenu()">
+                <div class="notification-menu" id="notificationMenu">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="close-notifications" onclick="toggleNotificationMenu()">×</button>
+                    </div>
+                    
+                    <div class="notification-section">
+                        <div class="section-header">Announcements</div>
+                        <div class="section-content">
+                            <div class="announcement-item">
+                                <div class="announcement-title">Special Offer! 🎉</div>
+                                <div class="announcement-details">
+                                    Get <span class="offer-highlight">50% OFF</span> on your first booking with The Assemblers! 
+                                    Limited time offer for new customers. Book now to avail this amazing discount.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-section">
+                        <div class="section-header">Booking Reminders</div>
+                        <div class="section-content">
+                            <div class="reminder-item">
+                                <div class="reminder-title">Furniture Assembly Reminder</div>
+                                <div class="reminder-details">
+                                    This is a reminder that you have a booking for Furniture Assembly
+                                </div>
+                                <div class="reminder-time">
+                                    on March 25, 2025 at 2:00 PM
+                                </div>
+                            </div>
+                            <div class="reminder-item">
+                                <div class="reminder-title">HVAC Service Reminder</div>
+                                <div class="reminder-details">
+                                    This is a reminder that you have a booking for HVAC Service
+                                </div>
+                                <div class="reminder-time">
+                                    on March 28, 2025 at 10:00 AM
+                                </div>
+                            </div>
+                            <div class="reminder-item">
+                                <div class="reminder-title">Electrical Service Reminder</div>
+                                <div class="reminder-details">
+                                    This is a reminder that you have a booking for Electrical Service
+                                </div>
+                                <div class="reminder-time">
+                                    on April 2, 2025 at 3:00 PM
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-section">
+                        <div class="section-header">Upcoming Bookings</div>
+                        <div class="section-content">
+                            <div class="booking-item">
+                                <span class="booking-frequency frequency-yearly">Yearly Service</span>
+                                <h4> Plumbing Repair & Installation</h4>
+                                <p>Date: March 25, 2025</p>
+                                <p>Time: 2:00 PM</p>
+                            </div>
+                            
+                            <div class="booking-item">
+                                <span class="booking-frequency frequency-weekly">Weekly Service</span>
+                                <h4>Home Deep Cleaning & Maid Services</h4>
+                                <p>Date: April 2, 2025</p>
+                                <p>Time: 3:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="profile-card">
+                <h2>Profile Information</h2>
+                <div class="profile-info">
+                    <p><strong>Name:</strong> Saeed Samkari</p>
+                    <p><strong>Email:</strong> SaeedSamk@gmail.com</p>
+                    <p><strong>Phone Number:</strong> 0799999999</p>
+                    <p><strong>Address:</strong> Amman, Jordan</p>
+                </div>
+                <form class="profile-edit-form">
+                    <input type="text" id="edit-name" placeholder="Name" value="Saeed Samkari">
+                    <input type="email" id="edit-email" placeholder="Email" value="SaeedSamk@gmail.com">
+                    <input type="tel" id="edit-phone" placeholder="Phone Number" value="0799999999">
+                    <input type="text" id="edit-address" placeholder="Address" value="Amman, Jordan">
+                    <div class="form-actions">
+                        <button type="submit" class="save-profile-btn">Save Changes</button>
+                        <button type="button" class="cancel-edit-btn">Cancel</button>
+                    </div>
+                </form>
+                <button class="edit-profile-btn">
+                    <i class="fas fa-edit"></i>
+                    Edit profile
+                </button>
+            </div>
+
+            <div class="services-section">
+                <h2>Book a New Service</h2>
+                <div class="service-cards">
+                    <div class="service-card">
+                        <img src="13.png" alt="Plumbing Service">
+                        <button class="book-now-btn" onclick="window.location.href='serviceClient.html'">Book Now</button>
+                    </div>
+                    <div class="service-card">
+                        <img src="14.png" alt="HVAC Service">
+                        <button class="book-now-btn" onclick="window.location.href='serviceClient.html'">Book Now</button>
+                    </div>
+                    <div class="service-card">
+                        <img src="15.png" alt="Electrical Service">
+                        <button class="book-now-btn" onclick="window.location.href='serviceClient.html'">Book Now</button>
+                    </div>
+                    <div class="service-card">
+                        <img src="16.png" alt="Painting Service">
+                        <button class="book-now-btn" onclick="window.location.href='serviceClient.html'">Book Now</button>
+                    </div>
+                    <div class="service-card">
+                        <img src="17.png" alt="Cleaning Service">
+                        <button class="book-now-btn" onclick="window.location.href='serviceClient.html'">Book Now</button>
+                    </div>
+                    <div class="service-card">
+                        <img src="18.png" alt="Carpentry Service">
+                        <button class="book-now-btn" onclick="window.location.href='serviceClient.html'">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="bookings-grid">
+            <div class="past-bookings">
+                <h2>Past Bookings:</h2>
+                <br>
+                <div class="booking-info">
+                    <p><strong>Service:</strong> <span>Assembly Service</span></p>
+                    <p><strong>Date:</strong> <span>2024-03-15</span></p>
+                    <p class="rating-label">
+                        <strong>Rating:</strong>
+                        <div class="rating-container" onmouseover="showRatingPopup(this)" onmouseout="hideRatingPopup(this)">
+                            <span class="rating-stars active">★★★★★</span>
+                            <div class="rating-popup">
+                                <span class="star" onclick="setRating(this, 1)">★</span>
+                                <span class="star" onclick="setRating(this, 2)">★★</span>
+                                <span class="star" onclick="setRating(this, 3)">★★★</span>
+                                <span class="star" onclick="setRating(this, 4)">★★★★</span>
+                                <span class="star" onclick="setRating(this, 5)">★★★★★</span>
+                            </div>
+                        </div>
+                    </p>
+                    <div class="review-section">
+                        <p><strong>Review:</strong></p>
+                        <textarea class="review-textarea" placeholder="Write your review here..." onchange="saveReview(this)"></textarea>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="view-details-btn">View details</button>
+                        <button class="book-again-btn">Book again</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pending-requests">
+                <h2>Pending Requests:</h2>
+                <div class="booking-info">
+                    <p><strong>Service:</strong> <span>Painting Job</span></p>
+                    <br>
+                    <p><strong>Location:</strong> <span>Khalda, Amman</span></p>
+                    <br>
+                    <p><strong>Date:</strong> <span>June 16th, 2025</span></p>
+                    <br>
+                    <p><strong>Assembler:</strong> <span>Ahmad AlSaqa</span></p>
+                    <br>
+                    <p><strong>Status:</strong> <span>Pending</span></p>
+                    <button class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+
+            <div class="upcoming-bookings">
+                <h2>Upcoming Bookings:</h2>
+                <div class="booking-info">
+                    <p><strong>Service:</strong> <span>HVAC</span></p>
+                    <br>
+                    <p><strong>Location:</strong> <span>Khalda, Amman</span></p>
+                    <br>
+                    <p><strong>Date:</strong> <span>May 28th, 2025</span></p>
+                    <br>
+                    <p><strong>Assembler:</strong> <span>Ahmad Madahleh</span></p>
+                    <br>
+                    <p><strong>Notes:</strong> <span>Multiple units</span></p>
+                    <button class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="progress-section">
+            <h2>Progress</h2>
+            <div class="progress-tracker">
+                <div class="progress-steps">
+                    <div class="step active">
+                        <span class="step-label">Accepted</span>
+                        1
+                    </div>
+                    <div class="step active">
+                        <span class="step-label">On The Way</span>
+                        2
+                    </div>
+                    <div class="step">
+                        <span class="step-label">On Site</span>
+                        3
+                    </div>
+                    <div class="step">
+                        <span class="step-label">Completed</span>
+                        4
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+    <div id="viewDetailsPopup" class="view-details-popup">
+        <div class="popup">
+            <button class="close-popup" onclick="closeViewDetailsPopup()">×</button>
+            <p><strong>Job #:</strong> 245</p>
+            <p><strong>Follow up date:</strong><br>July 7th, 2025</p>
+            <p><strong>Review:</strong><br>Professional, on time,<br>excellent service.</p>
+        </div>
+    </div>
+
+    
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-modal-content">
+            <button class="profile-modal-close">×</button>
+            <h2>Edit Profile</h2>
+            <form class="profile-form">
+                <div class="form-group">
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-phone">Phone Number</label>
+                    <input type="tel" id="edit-phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-address">Address</label>
+                    <input type="text" id="edit-address" required>
+                </div>
+                <button type="submit" class="save-profile-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    
+    <div class="booking-modal" id="bookingModal">
+        <div class="booking-modal-content">
+            <button class="booking-modal-close">×</button>
+            <h2>Book a Service</h2>
+            <form class="booking-form">
+                <div>
+                    <label for="service-type">Service Type</label>
+                    <select id="service-type" required>
+                        <option value="">Select a service</option>
+                        <option value="furniture-assembly">Furniture Assembly</option>
+                        <option value="repair">Repair Service</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="installation">Installation</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="service-date">Preferred Date</label>
+                    <input type="date" id="service-date" required>
+                </div>
+                <div>
+                    <label for="service-time">Preferred Time</label>
+                    <select id="service-time" required>
+                        <option value="">Select time</option>
+                        <option value="morning">Morning (9AM - 12PM)</option>
+                        <option value="afternoon">Afternoon (12PM - 4PM)</option>
+                        <option value="evening">Evening (4PM - 7PM)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="Enter your address" required>
+                </div>
+                <div class="full-width">
+                    <label for="description">Service Description</label>
+                    <textarea id="description" placeholder="Please describe what you need help with..."></textarea>
+                </div>
+                <div class="full-width">
+                    <button type="submit">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="helpPopup" class="help-popup">
+        <div class="help-popup-content">
+            <h2 class="help-popup-title">Help Center</h2>
+            <div class="contact-option" onclick="toggleContactActions(this)">
+                <i class="fas fa-phone"></i>
+                <span>07XXXXXXXXX</span>
+                <div class="contact-actions">
+                    <button onclick="window.location.href='tel:07XXXXXXXXX'">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                    <button onclick="window.location.href='sms:07XXXXXXXXX'">
+                        <i class="fas fa-comment"></i> Text
+                    </button>
+                </div>
+            </div>
+            <a href="mailto:theassemblers@gmail.com" class="email-option">
+                <i class="fas fa-envelope"></i>
+                <span>theassemblers@gmail.com</span>
+            </a>
+            <button class="popup-button" onclick="closeHelpPopup()">Close</button>
+        </div>
+    </div>
+
+    <footer>
+        <div>Contact us: 07XXXXXXXXX<br>©all copyrights goes to </div>
+        <div>Email: <a href="mailto:theassemblers@gmail.com" style="color: white;">theassemblers@gmail.com</a></div>
+    </footer>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+           
+            function showViewDetailsPopup(event) {
+                const popup = document.getElementById("viewDetailsPopup");
+                const pastBookings = document.querySelector('.past-bookings');
+                const pastBookingsRect = pastBookings.getBoundingClientRect();
+                
+                
+                popup.style.top = `${pastBookingsRect.top + window.scrollY + 40}px`; // 40px to account for the heading
+                popup.style.left = `${pastBookingsRect.left + window.scrollX}px`;
+                popup.style.display = "block";
+            }
+
+            function closeViewDetailsPopup(event) {
+                if (event) {
+                    event.stopPropagation(); 
+                }
+                const popup = document.getElementById("viewDetailsPopup");
+                popup.style.display = "none";
+            }
+
+           
+            document.addEventListener('click', function(e) {
+                const popup = document.getElementById("viewDetailsPopup");
+                const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+                
+                
+                if (!popup.contains(e.target) && !Array.from(viewDetailsButtons).includes(e.target)) {
+                    popup.style.display = "none";
+                }
+            });
+
+            
+            const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+            viewDetailsButtons.forEach(button => {
+                button.addEventListener('click', showViewDetailsPopup);
+            });
+
+            
+            const closeButton = document.querySelector('.close-popup');
+            if (closeButton) {
+                closeButton.addEventListener('click', closeViewDetailsPopup);
+            }
+
+           
+            const editProfileBtn = document.querySelector('.edit-profile-btn');
+            const profileInfo = document.querySelector('.profile-info');
+            const profileEditForm = document.querySelector('.profile-edit-form');
+            const cancelEditBtn = document.querySelector('.cancel-edit-btn');
+
+            editProfileBtn.addEventListener('click', () => {
+                profileInfo.classList.add('hidden');
+                profileEditForm.classList.add('active');
+                editProfileBtn.style.display = 'none';
+            });
+
+            cancelEditBtn.addEventListener('click', () => {
+                profileInfo.classList.remove('hidden');
+                profileEditForm.classList.remove('active');
+                editProfileBtn.style.display = 'block';
+            });
+
+            profileEditForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                
+                const name = document.getElementById('edit-name').value;
+                const email = document.getElementById('edit-email').value;
+                const phone = document.getElementById('edit-phone').value;
+                const address = document.getElementById('edit-address').value;
+
+                profileInfo.innerHTML = `
+                    <p><strong>Name:</strong> ${name}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Phone Number:</strong> ${phone}</p>
+                    <p><strong>Address:</strong> ${address}</p>
+                `;
+                
+                
+                profileInfo.classList.remove('hidden');
+                profileEditForm.classList.remove('active');
+                editProfileBtn.style.display = 'block';
+            });
+
+            function showCartPopup() {
+                const popup = document.getElementById("cartPopup");
+                popup.style.display = "flex";
+            }
+
+            function closeCartPopup() {
+                const popup = document.getElementById("cartPopup");
+                popup.style.display = "none";
+            }
+
+            
+            document.getElementById("cartPopup").addEventListener("click", function(e) {
+                if (e.target === this) {
+                    this.style.display = "none";
+                }
+            });
+
+            function showHelpPopup() {
+                const popup = document.getElementById("helpPopup");
+                popup.style.display = "flex";
+            }
+
+            function closeHelpPopup() {
+                const popup = document.getElementById("helpPopup");
+                popup.style.display = "none";
+            }
+
+            function toggleContactActions(element) {
+                const actions = element.querySelector('.contact-actions');
+                actions.style.display = actions.style.display === 'flex' ? 'none' : 'flex';
+            }
+
+            
+            document.getElementById("helpPopup").addEventListener("click", function(e) {
+                if (e.target === this) {
+                    this.style.display = "none";
+                }
+            });
+
+            
+            document.querySelector('.sidebar a[href="#"]').onclick = function(e) {
+                e.preventDefault();
+                showHelpPopup();
+            };
+
+            function toggleNotificationMenu() {
+                const menu = document.getElementById('notificationMenu');
+                menu.classList.toggle('show');
+            }
+
+           
+            document.addEventListener('click', function(event) {
+                const notificationContainer = document.querySelector('.notification-container');
+                const notificationMenu = document.getElementById('notificationMenu');
+                
+                if (!notificationContainer.contains(event.target) && notificationMenu.classList.contains('show')) {
+                    notificationMenu.classList.remove('show');
+                }
+            });
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+        }
+
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('show');
+        }
+
+        function handleProfilePicture(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        
+        document.addEventListener('click', function(event) {
+            const profileContainer = document.querySelector('.profile-container');
+            const profileMenu = document.getElementById('profileMenu');
+            if (!profileContainer.contains(event.target)) {
+                profileMenu.classList.remove('show');
+            }
+        });
+
+        
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById("sidebar");
+            const menuIcon = document.querySelector('.menu-icon');
+            
+            if (sidebar.classList.contains('open') && 
+                !sidebar.contains(event.target) && 
+                !menuIcon.contains(event.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+       
+        const editProfileBtn = document.querySelector('.edit-profile-btn');
+        const profileModal = document.getElementById('profileModal');
+        const profileModalClose = document.querySelector('.profile-modal-close');
+        const profileForm = document.querySelector('.profile-form');
+
+        
+        editProfileBtn.addEventListener('click', () => {
+            //fill
+            document.getElementById('edit-name').value = document.getElementById('name').textContent;
+            document.getElementById('edit-email').value = document.getElementById('email').textContent;
+            document.getElementById('edit-phone').value = document.getElementById('phone').textContent;
+            document.getElementById('edit-address').value = document.getElementById('address').textContent;
+            
+            profileModal.classList.add('active');
+        });
+
+        
+        profileModalClose.addEventListener('click', () => {
+            profileModal.classList.remove('active');
+        });
+
+        
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                profileModal.classList.remove('active');
+            }
+        });
+
+        
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            
+            document.getElementById('name').textContent = document.getElementById('edit-name').value;
+            document.getElementById('email').textContent = document.getElementById('edit-email').value;
+            document.getElementById('phone').textContent = document.getElementById('edit-phone').value;
+            document.getElementById('address').textContent = document.getElementById('edit-address').value;
+            
+           
+            profileModal.classList.remove('active');
+        });
+
+        function showCartPopup() {
+            const popup = document.getElementById("cartPopup");
+            popup.style.display = "flex";
+        }
+
+        function closeCartPopup() {
+            const popup = document.getElementById("cartPopup");
+            popup.style.display = "none";
+        }
+
+        
+        document.getElementById("cartPopup").addEventListener("click", function(e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        });
+
+        function showHelpPopup() {
+            const popup = document.getElementById("helpPopup");
+            popup.style.display = "flex";
+        }
+
+        function closeHelpPopup() {
+            const popup = document.getElementById("helpPopup");
+            popup.style.display = "none";
+        }
+
+        function toggleContactActions(element) {
+            const actions = element.querySelector('.contact-actions');
+            actions.style.display = actions.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        
+        document.getElementById("helpPopup").addEventListener("click", function(e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        });
+
+        
+        document.querySelector('.sidebar a[href="#"]').onclick = function(e) {
+            e.preventDefault();
+            showHelpPopup();
+        };
+
+        function toggleNotificationMenu() {
+            const menu = document.getElementById('notificationMenu');
+            menu.classList.toggle('show');
+        }
+
+        
+        document.addEventListener('click', function(event) {
+            const notificationContainer = document.querySelector('.notification-container');
+            const notificationMenu = document.getElementById('notificationMenu');
+            
+            if (!notificationContainer.contains(event.target) && notificationMenu.classList.contains('show')) {
+                notificationMenu.classList.remove('show');
+            }
+        });
+
+        function showRatingPopup(container) {
+            const popup = container.querySelector('.rating-popup');
+            popup.style.display = 'block';
+        }
+
+        function hideRatingPopup(container) {
+            const popup = container.querySelector('.rating-popup');
+            popup.style.display = 'none';
+        }
+
+        function setRating(starElement, rating) {
+            const container = starElement.closest('.rating-container');
+            const displayStars = container.querySelector('.rating-stars');
+            const popupStars = container.querySelectorAll('.rating-popup .star');
+            
+            
+            displayStars.textContent = '★'.repeat(rating);
+            
+            
+            popupStars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            
+            
+            hideRatingPopup(container);
+            
+            
+            console.log(`Rating set to ${rating} stars`);
+        }
+
+        function saveReview(textarea) {
+            
+            console.log('Review saved:', textarea.value);
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html> 

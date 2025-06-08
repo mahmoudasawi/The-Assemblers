@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #222222;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo img {
+      height: 60px;
+      margin-left: 10px;  
+    }
+
+    .menu-icon {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: #222222;
+      transition: 0.4s;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .btn {
+      background-color: #FEBC11;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+   
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 1.4rem;
+      color: #222222;
+      transition: 0.3s;
+    }
+
+    .sidebar a span {
+      color: #FEBC11;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+
+   
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .container {
+      position: relative;
+      margin-left: 1cm;
+      margin-bottom: 100px;
+      transition: none;
+      z-index: 1;
+    }
+
+    footer {
+      background-color: #0099cc;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    
+    .overview {
+      width: 1347px;
+      height: 223px;
+      margin: 20px 0;
+    }
+
+    .overview h3 {
+      margin-bottom: 15px;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 5px;
+      height: calc(100% - 40px);
+    }
+
+    .overview-grid > div {
+      padding: 8px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .overview-grid > div .count {
+      font-weight: bold;
+      color: #FEBC11;
+      margin-left: 5px;
+    }
+
+    .card {
+      width: 1347px;
+      margin: 20px 0;
+    }
+
+    .card:last-child {
+      margin-bottom: 40px;
+    }
+
+    .card table {
+      width: 100%;
+    }
+
+    .role {
+      display: block;
+      margin: 2px 0;
+      color: #29A1CC;
+      text-align: center;
+    }
+
+    .role.client, .role.assembler {
+      color: #29A1CC;
+    }
+
+    .card table td {
+      vertical-align: top;
+      text-align: center;
+    }
+
+    .card table th {
+      text-align: center;
+    }
+
+    .actions {
+      text-align: center;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 2px 0;
+    }
+
+    .actions button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      background-color: #FEBC11;
+      color: #222222;
+      font-weight: bold;
+    }
+
+    .actions button:hover {
+      background-color: #FFFFFF;
+    }
+
+    .view-btn {
+      background-color: #0099cc;
+      color: white;
+    }
+
+    .ban-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .approve-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .reject-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .drop-btn {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-menu {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 200px;
+      display: none;
+      z-index: 1000;
+    }
+
+    .profile-menu.show {
+      display: block;
+    }
+
+    .menu-item {
+      padding: 12px 15px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .menu-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .menu-item:first-child {
+      border-radius: 8px 8px 0 0;
+    }
+
+    .menu-item:last-child {
+      border-radius: 0 0 8px 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="logo">
+      <a href="main.html">
+        <img src="logo.png" alt="The Assemblers Logo" />
+      </a>
+    </div>
+    <div class="header-buttons">
+      <div class="profile-container">
+        <img src="acc.png" alt="Account" id="profileImage" style="width: 40px; height: 40px; cursor: pointer; border-radius: 50%; object-fit: cover;" onclick="toggleProfileMenu()" />
+        <div class="profile-menu" id="profileMenu">
+          <div class="menu-item" onclick="document.getElementById('profilePictureInput').click()">
+            <span>Edit Profile Picture</span>
+          </div>
+          <div class="menu-item">
+            <span>Settings</span>
+          </div>
+          <div class="menu-item" style="color: #ff0000;" onclick="window.location.href='main.html'">
+            <span>Log Out</span>
+          </div>
+        </div>
+        <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePicture(event)" />
+      </div>
+    </div>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <a href="Application.html">Become an <span>Assembler</span></a>
+    <a href="service.html">Services</a>
+    <a href="OurAssemblers.html">Our <span>Assemblers</span></a>
+    <a href="#">Help center</a>
+  </div>
+  <div class="sidebar-overlay"></div>
+  
+  <div class="container">
+    <div class="welcome">
+      Welcome back, <span class="highlight">Hamad</span>
+    </div>
+
+    <div class="overview">
+      <h3>Overview</h3>
+      <div class="overview-grid">
+        <div>Users: <span class="count">1,247</span></div>
+        <div>Completed: <span class="count">856</span></div>
+        <div>Pending: <span class="count">42</span></div>
+        <div>Cancellations: <span class="count">23</span></div>
+        <div>Assemblers: <span class="count">156</span></div>
+        <div>Applications: <span class="count">18</span></div>
+        <div>Services: <span class="count">12</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <strong>User Management</strong>
+      <table>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>Yara Amjad</td>
+          <td>YaraAmjad@gmail.com</td>
+          <td>
+            <span class="role">Client</span>
+          </td>
+          <td>Active</td>
+          <td class="actions">
+            <div class="actions-row">
+              <button class="view-btn">View</button>
+              <button class="ban-btn">Ban</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Mahmoud Soubhi</td>
+          <td>MahmoudSoubhi@gmail.com</td>
+          <td>
+            <span class="role assembler">Assembler</span>
+          </td>
+          <td>Pending</td>
+          <td class="actions">
+            <div class="actions-row">
+              <button class="view-btn">View</button>
+              <button class="ban-btn">Ban</button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <strong>Service Requests</strong>
+      <table>
+        <tr>
+          <th>#ID</th>
+          <th>Client</th>
+          <th>Assembler</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>145</td>
+          <td>Ahmad Yousef</td>
+          <td>Ahmad Madhaleh</td>
+          <td>May 21, 2025</td>
+          <td>In Progress</td>
+        </tr>
+        <tr>
+          <td>158</td>
+          <td>Yara Amjad</td>
+          <td>Sharif Shalabi</td>
+          <td>January 14th, 2025</td>
+          <td>Completed</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <strong>Assembler Applications</strong>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Experience</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>Sara Jamal</td>
+          <td>32</td>
+          <td>5 Years</td>
+          <td>Pending</td>
+          <td class="actions">
+            <button class="view-btn">View Application</button>
+            <button class="approve-btn">Accept</button>
+            <button class="reject-btn">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td>James Alarabi</td>
+          <td>28</td>
+          <td>7 Years</td>
+          <td>Pending</td>
+          <td class="actions">
+            <button class="view-btn">View Application</button>
+            <button class="approve-btn">Accept</button>
+            <button class="reject-btn">Reject</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <strong>Announcements:</strong>
+      <table>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Created by</th>
+          <th>Created for</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>New User Offer</td>
+          <td>50% for first time users</td>
+          <td>2025-06-01</td>
+          <td>Admin</td>
+          <td>All Users</td>
+          <td>Active</td>
+        </tr>
+        <tr>
+          <td>Holiday Schedule</td>
+          <td>Updated working hours during Ramadan</td>
+          <td>2026-03-19</td>
+          <td>Admin</td>
+          <td>Assemblers</td>
+          <td>Active</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <div>Contact us: 07XXXXXXXXX<br>©all copyrights goes to </div>
+    <div>Email: <a href="mailto:theassemblers@gmail.com" style="color: white;">theassemblers@gmail.com</a></div>
+  </footer>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+    
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (sidebar.classList.contains('open') && 
+          !sidebar.contains(event.target) && 
+          !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    function toggleProfileMenu() {
+      const menu = document.getElementById('profileMenu');
+      menu.classList.toggle('show');
+    }
+
+    function handleProfilePicture(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('profileImage').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    
+    document.addEventListener('click', function(event) {
+      const profileContainer = document.querySelector('.profile-container');
+      const profileMenu = document.getElementById('profileMenu');
+      if (!profileContainer.contains(event.target)) {
+        profileMenu.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html> 
